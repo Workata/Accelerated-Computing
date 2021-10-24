@@ -49,4 +49,4 @@ def greyscale_filter(image : Image):
 if __name__ == "__main__":
 	test_img = open_image('./ImgInput/joel-filipe-QwoNAhbmLLo-unsplash.jpg')
 	filtered_img = greyscale_filter(test_img)
-	save_image(filtered_img, './ImgOutput/test1.jpg')
+	save_image(filtered_img, './ImgOutput/greyscale_test.jpg')
