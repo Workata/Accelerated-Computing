@@ -6,6 +6,7 @@ TODOs:
 """
 from PIL import Image
 from datetime import datetime
+import pandas as pd
 
 def open_image(path: str):
 	"""
