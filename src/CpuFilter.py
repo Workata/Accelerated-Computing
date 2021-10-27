@@ -147,26 +147,18 @@ def color_filter(image : Image, color : str):
 
 			if(color == 'Red'):
 				x = red
-				y = green - 255
-				z = blue - 255
+				y = 0
+				z = 0
 
 			if(color == 'Green'):
-				x = red - 255
+				x = 0
 				y = green
-				z = blue - 255
+				z = 0
 
 			if(color == 'Blue'):
-				x = red - 255
-				y = green - 255
+				x = 0
+				y = 0
 				z = blue
-
-			# * trim each channel <0, 255>
-			x = max(x, 0)
-			x = min(255, x)
-			y = max(y, 0)
-			y = min(255, y)
-			z = max(z, 0)
-			z = min(255, z)
 
 			pixels[i, j] = (int(x), int(y), int(z))
 
@@ -258,7 +250,7 @@ if __name__ == "__main__":
 	# * SMALL
 	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'grayscale', filter_option = None)
 	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'negative', filter_option = None)
-	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 'Red')
+	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 'Blue')
 	# * MEDIUM
 	report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'grayscale', filter_option = None)
 	report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'negative', filter_option = None)

@@ -1,4 +1,4 @@
 venv/
 notes.txt
 test.py
-Output.xlsx
+*.xlsx
