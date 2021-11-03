@@ -2,3 +2,4 @@ venv/
 notes.txt
 test.py
 *.xlsx
+CopyImgOutput/

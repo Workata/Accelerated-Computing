@@ -10,11 +10,14 @@ from datetime import datetime
 import pandas as pd
 
 # * samples
-DIR_IMG = "ImgInput"
+DIR_IMG_INPUT = "ImgInput"
+DIR_IMG_OUTPUT = "ImgOutput"
 SMALL_IMG = "tim-swaan-eOpewngf68w-unsplash_small.jpg"
 MEDIUM_IMG = "tim-swaan-eOpewngf68w-unsplash_medium.jpg"
 BIG_IMG = "tim-swaan-eOpewngf68w-unsplash_big.jpg"
 BIGGEST_IMG = "tim-swaan-eOpewngf68w-unsplash_biggest.jpg"
+
+EXCEL_NAME =  "Output.xlsx"
 
 # * number of tests
 N = 3
@@ -29,7 +32,7 @@ def open_image(img_name: str):
 	Returns:
 		Image: Loaded image.
 	"""
-	path = f"{DIR_IMG}/{img_name}"
+	path = f"{DIR_IMG_INPUT}/{img_name}"
 	image = Image.open(path)
 	return image
 
@@ -224,17 +227,17 @@ def test_filter(test_img_name, report, filter_name, filter_option):
 		if filter_name == 'grayscale':
 			filtered_img_grayscale, total_time = grayscale_filter(test_img)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_grayscale, './ImgOutput/grayscale_test.jpg')
+			save_image(filtered_img_grayscale, f'./{DIR_IMG_OUTPUT}/grayscale_test.jpg')
 		
 		if filter_name == 'negative':
 			filtered_img_negative, total_time = negative_filter(test_img)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_negative, './ImgOutput/negative_test.jpg')
+			save_image(filtered_img_negative, f'./{DIR_IMG_OUTPUT}/negative_test.jpg')
 			
 		if filter_name == 'color':
 			filtered_img_color, total_time = color_filter(test_img, filter_option)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_color, './ImgOutput/color_test.jpg')
+			save_image(filtered_img_color, f'./{DIR_IMG_OUTPUT}/color_test.jpg')
 	
 	return report
 
@@ -250,20 +253,20 @@ if __name__ == "__main__":
 	# * SMALL
 	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'grayscale', filter_option = None)
 	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'negative', filter_option = None)
-	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 'Blue')
+	report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 'Red')
 	# * MEDIUM
-	report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-	report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'negative', filter_option = None)
-	report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'color', filter_option = 'Red')
+	# report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+	# report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'negative', filter_option = None)
+	# report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'color', filter_option = 'Red')
 	# * BIG
-	report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-	report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'negative', filter_option = None)
-	report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'color', filter_option = 'Red')
+	# report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+	# report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'negative', filter_option = None)
+	# report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'color', filter_option = 'Red')
 	# * BIGGEST
-	report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-	report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'negative', filter_option = None)
-	report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'color', filter_option = 'Red')
+	# report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+	# report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'negative', filter_option = None)
+	# report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'color', filter_option = 'Red')
 
 	data = pd.DataFrame(report)
-	data.to_excel("Output.xlsx")
+	data.to_excel(EXCEL_NAME)
 
