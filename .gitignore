@@ -3,3 +3,4 @@ notes.txt
 test.py
 *.xlsx
 CopyImgOutput/
+.vscode/

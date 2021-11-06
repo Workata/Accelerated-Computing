@@ -8,80 +8,19 @@ TODOs:
 from PIL import Image
 from datetime import datetime
 import pandas as pd
+from Utils import save_image, open_image, create_image, get_pixel
 
 # * samples
-DIR_IMG_INPUT = "ImgInput"
 DIR_IMG_OUTPUT = "ImgOutput"
 SMALL_IMG = "tim-swaan-eOpewngf68w-unsplash_small.jpg"
 MEDIUM_IMG = "tim-swaan-eOpewngf68w-unsplash_medium.jpg"
 BIG_IMG = "tim-swaan-eOpewngf68w-unsplash_big.jpg"
 BIGGEST_IMG = "tim-swaan-eOpewngf68w-unsplash_biggest.jpg"
 
-EXCEL_NAME =  "Output.xlsx"
+EXCEL_NAME =  "OUTPUT_CPU.xlsx"
 
 # * number of tests
 N = 3
-
-def open_image(img_name: str):
-	"""
-	Open an image using Image.open(...) method from PIL lib.
-
-	Args:
-		path (str): Path to the image that you want to open.
-
-	Returns:
-		Image: Loaded image.
-	"""
-	path = f"{DIR_IMG_INPUT}/{img_name}"
-	image = Image.open(path)
-	return image
-
-def save_image(image: Image, path: str):
-	"""
-	Open an image using Image.save(...) method from PIL lib.
-
-	Args:
-		image (Image): Image to get pixel from.
-		path (str): Path to the save location.
-
-	Returns:
-		None
-	"""
-	image.save(path)
-
-def create_image(width: int, height: int):
-	"""
-	Create new image using Image.new(...) method from PIL lib.
-
-	https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.new
-
-	Args:
-		width (int): width of an image
-		height (int): height of an image
-
-	Returns:
-		Image: Newly created image.
-	"""
-	image = Image.new("RGB", (width, height), "white")
-	return image
-
-def get_pixel(image : Image, i : int, j : int):
-	"""
-	Get pixel of an image.
-
-	Args:
-		image (Image): Image to get pixel from.
-		i (int): x-axis coordinate of pixel
-		j (int): y-axis coordinate of pixel
-
-	Returns:
-		Tuple: Pixel of an image.
-	"""
-	width, height = image.size
-	if i > width or j > height:
-		return None
-	pixel = image.getpixel((i, j))
-	return pixel
 
 def grayscale_filter(image: Image):
 	"""
@@ -227,17 +166,17 @@ def test_filter(test_img_name, report, filter_name, filter_option):
 		if filter_name == 'grayscale':
 			filtered_img_grayscale, total_time = grayscale_filter(test_img)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_grayscale, f'./{DIR_IMG_OUTPUT}/grayscale_test.jpg')
+			save_image(filtered_img_grayscale, f'./{DIR_IMG_OUTPUT}/grayscale_test_cpu.jpg')
 		
 		if filter_name == 'negative':
 			filtered_img_negative, total_time = negative_filter(test_img)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_negative, f'./{DIR_IMG_OUTPUT}/negative_test.jpg')
+			save_image(filtered_img_negative, f'./{DIR_IMG_OUTPUT}/negative_test_cpu.jpg')
 			
 		if filter_name == 'color':
 			filtered_img_color, total_time = color_filter(test_img, filter_option)
 			report = add_new_row_to_report(report, test_img_name, filter_name, total_time)
-			save_image(filtered_img_color, f'./{DIR_IMG_OUTPUT}/color_test.jpg')
+			save_image(filtered_img_color, f'./{DIR_IMG_OUTPUT}/color_test_cpu.jpg')
 	
 	return report
 
@@ -269,4 +208,3 @@ if __name__ == "__main__":
 
 	data = pd.DataFrame(report)
 	data.to_excel(EXCEL_NAME)
-
