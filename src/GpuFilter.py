@@ -1,5 +1,5 @@
 """
-    TODO docstring
+    This module demonstrates different filters. This implementation of those filters use GPU as a main resource.
 """
 # * imports
 from PIL import Image
@@ -24,6 +24,23 @@ EXCEL_NAME =  "OUTPUT_GPU.xlsx"
 N = 3
 
 def grayscale_filter(image : Image):
+    """
+    This function filters an image using grayscale filter.
+
+    About grayscale filter:
+        Grayscale is a range of monochromatic shades from black to white.
+        Therefore, a grayscale image contains only shades of gray and no color.
+
+    Args:
+        image (Image): Image to filter.
+
+    Returns:
+        Image: Image after grayscale filtering.
+        float: time of memory allocation.
+        float: time of operations in kernel.
+        float: time of getting data back from gpu.
+        float: total time of filtering.
+    """
 
     total_timestamp_1 = datetime.now()
  
@@ -90,6 +107,23 @@ def grayscale_filter(image : Image):
 
 
 def color_filter(image : Image, color_number: int):
+    """
+    This function filters an image using color filter.
+
+    About color filter:
+        This filter allows through only choosen (red/green/blue) color.
+
+    Args:
+        image (Image): Image to filter.
+        color (int): Color of filter (0 - red, 1 - green, 2 - blue).
+
+    Returns:
+        Image: Image after choosen color filtering.
+        float: time of memory allocation.
+        float: time of operations in kernel.
+        float: time of getting data back from gpu.
+        float: total time of filtering.
+    """
 
     total_timestamp_1 = datetime.now()
  
@@ -174,6 +208,25 @@ def color_filter(image : Image, color_number: int):
  
 
 def negative_filter(image: Image):
+    """
+    This function filters an image using negative filter.
+
+    About negative filter:
+        A positive image is a normal image. A negative image is a total inversion,
+        in which light areas appear dark and vice versa. A negative color image is
+        additionally color-reversed, with red areas appearing cyan, greens
+        appearing magenta, and blues appearing yellow, and vice versa.
+
+    Args:
+        image (Image): Image to filter.
+
+    Returns:
+        Image: Image after negative filtering.
+        float: time of memory allocation.
+        float: time of operations in kernel.
+        float: time of getting data back from gpu.
+        float: total time of filtering.
+    """
 
     total_timestamp_1 = datetime.now()
  
@@ -241,9 +294,22 @@ def negative_filter(image: Image):
     return negative_image, alloc_time, kernel_time, back_data_time, total_time
 
 
-def add_new_row_to_report(report, test_img_name, filter_name, alloc_time, kernel_time, back_data_time, total_time):
+def add_new_row_to_report(report : dict, test_img_name : str, filter_name : str,
+ alloc_time: float, kernel_time: float, back_data_time: float, total_time: float):
     """
-    TODO Docstring
+    This function adds given data to the dictionary (report).
+
+    Args:
+        report (dict): report that later will be converted to the excel.
+        test_img_name (str): name of the image that is being tested.
+        filter_name (str): name of the filter that is being tested.
+        alloc_time (float): time of memory allocation.
+        kernel_time (float): time of operations in kernel.
+        back_data_time (float): time of getting data back from gpu.
+        total_time (float): total time of filtering.
+
+	Returns:
+		dict: Report after update.
     """
     report['img_name'].append(test_img_name)
     report['filter_name'].append(filter_name)
@@ -253,10 +319,20 @@ def add_new_row_to_report(report, test_img_name, filter_name, alloc_time, kernel
     report['total_time'].append(total_time)
     return report
 
-def test_filter(test_img_name, report, filter_name, filter_option):
+def test_filter(test_img_name : str, report : dict, filter_name : str, filter_option : int):
     """
-    TODO Docstring
-    """
+	This function 
+
+	Args:
+		test_img_name (str): name of the iamge that is being tested.
+        report (dict): report that later will be converted to the excel.
+        filter_name (str): name of the filter that is being tested.
+        filter_option (int): number that indicates the selected color filtering option.
+        
+	Returns:
+		dict: Report after update.
+	"""
+    
     test_img = open_image(test_img_name)
 
     for i in range(0, N):
@@ -280,29 +356,26 @@ def test_filter(test_img_name, report, filter_name, filter_option):
 
 if __name__ == "__main__":
     """
-        TODO docstring
         SMALL_IMG - 640x427, 93.9 KB
         MEDIUM_IMG - 1920x1280, 838.8 KB
         BIG_IMG - 2400x1600, 1.24 MB
         BIGGEST_IMG - 5472x3648, 5.6 MB
-
-        color: 
-        0 - red, 1 - green, 2 - blue
     """
+
     report = {'img_name': [], 'filter_name': [], 'alloc_time': [], 'kernel_time': [], 'back_data_time': [], 'total_time': []}
 
-    # # * SMALL
-    # report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-    # report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'negative', filter_option = None)
-    # report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 0)
-    # # * MEDIUM
-    # report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-    # report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'negative', filter_option = None)
-    # report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'color', filter_option = 0)
-    # # * BIG
-    # report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'grayscale', filter_option = None)
-    # report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'negative', filter_option = None)
-    # report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'color', filter_option = 0)
+    # * SMALL
+    report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+    report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'negative', filter_option = None)
+    report = test_filter(test_img_name = SMALL_IMG, report = report, filter_name = 'color', filter_option = 0)
+    # * MEDIUM
+    report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+    report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'negative', filter_option = None)
+    report = test_filter(test_img_name = MEDIUM_IMG, report = report, filter_name = 'color', filter_option = 0)
+    # * BIG
+    report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'grayscale', filter_option = None)
+    report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'negative', filter_option = None)
+    report = test_filter(test_img_name = BIG_IMG, report = report, filter_name = 'color', filter_option = 0)
     # * BIGGEST
     report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'grayscale', filter_option = None)
     report = test_filter(test_img_name = BIGGEST_IMG, report = report, filter_name = 'negative', filter_option = None)

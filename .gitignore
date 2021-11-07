@@ -4,3 +4,4 @@ test.py
 *.xlsx
 CopyImgOutput/
 .vscode/
+*.pyc
