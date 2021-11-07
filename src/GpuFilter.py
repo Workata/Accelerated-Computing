@@ -251,15 +251,15 @@ def negative_filter(image: Image):
     # * Kernel definition - write CUDA C code
     kernel = """
  
-    __global__ void negativeFilter( float *inImage, int check ){
+    __global__ void negativeFilter( float *inputImage, int check ){
  
         int subpixelIndex = (threadIdx.x ) + blockDim.x * blockIdx.x ; // subpixelIndex = index of subpixel (pointing at red SP) -> [... 'r, g, b','r, g, b' ...]
  
         if(subpixelIndex *3 < check*3)
         { 
-            inImage[subpixelIndex*3]= 255-inImage[subpixelIndex*3];
-            inImage[subpixelIndex*3+1]= 255-inImage[subpixelIndex*3+1];
-            inImage[subpixelIndex*3+2]= 255-inImage[subpixelIndex*3+2];
+            inputImage[subpixelIndex*3] = 255 - inputImage[subpixelIndex*3];
+            inputImage[subpixelIndex*3+1] = 255 - inputImage[subpixelIndex*3+1];
+            inputImage[subpixelIndex*3+2] = 255 - inputImage[subpixelIndex*3+2];
         }
     }
     """
@@ -311,6 +311,7 @@ def add_new_row_to_report(report : dict, test_img_name : str, filter_name : str,
 	Returns:
 		dict: Report after update.
     """
+
     report['img_name'].append(test_img_name)
     report['filter_name'].append(filter_name)
     report['alloc_time'].append(alloc_time)
