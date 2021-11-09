@@ -49,18 +49,19 @@ def grayscale_filter(image : Image):
  
     alloc_timestamp_1 = datetime.now()
 
-    device_image_pixels = cuda.mem_alloc(image_pixels.nbytes)  # * Allocate memory on the device
+    device_image_pixels = cuda.mem_alloc(image_pixels.nbytes)  # * Allocate memory on the device, nbytes - number of bytes
     cuda.memcpy_htod(device_image_pixels, image_pixels)        # * Transfer the data to the GPU
  
     alloc_timestamp_2 = datetime.now()
  
     kernel_timestamp_1 = datetime.now()
  
-    # * Kernel declaration - kernel grid and block size
+    # * Kernel declaration - kernel grid and block size - https://en.wikipedia.org/wiki/Thread_block_(CUDA_programming)
+    # ! 1D-indexing
     BLOCK_SIZE = 1024
-    block = (1024, 1, 1)
-    check_size = numpy.int32(image.size[0] * image.size[1])
-    grid = (int(image.size[0] * image.size[1] / BLOCK_SIZE) + 1, 1, 1)
+    block = (1024, 1, 1)    # * 1024 threads in block (block size: 1024x1x1)
+    check_size = numpy.int32(image.size[0] * image.size[1]) # width * height of image
+    grid = (int(image.size[0] * image.size[1] / BLOCK_SIZE) + 1, 1, 1) # * grid size (number_of_blocks, 1, 1)
  
     # * Kernel definition - write CUDA C code
     kernel = """
